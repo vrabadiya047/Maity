@@ -1,24 +1,38 @@
-Step 1: Start the Backend
-1. Open your terminal
 
-2. Navigate to the backend folder:
-cd backend
+## ⚙️ Setup Instructions
 
-3 .Start the Python backend server:
-python App.py
+### Step 1: Clone the Repository
 
-Step 2: Start the Frontend
-1. Open a new terminal window (don't close the backend one!)
+git clone https://github.com/vrabadiya047/Maity.git
+cd Maity
 
-2. Navigate to the frontend folder:
-cd frontend
+### Step 2: Backend Setup (Python)
+⬢ Create a virtual environment (optional but recommended)
+python -m venv venv
 
-3. Start the React frontend:
+⬢ Activate the virtual environment
+# For PowerShell (Windows)
+.\venv\Scripts\Activate.ps1
+
+# For CMD (Windows)
+venv\Scripts\activate
+
+# For macOS/Linux
+source venv/bin/activate
+
+⬢ Install Python dependencies
+pip install -r requirements.txt
+
+⬢ Run the backend
+python app.py
+
+### Step 3: Frontend Setup
+⬢ Install dependencies
+npm install
+
+⬢ Start the frontend
 npm start
 
-🌐 Frontend: running on http://localhost:3000
 
-Preview : 
-![Preview](https://github.com/user-attachments/assets/01ed76aa-1210-4130-b4b4-308906541753)
-
+### Preview : 
 
