@@ -1,4 +1,3 @@
-// components/charts/SizeVsMassScatter.tsx
 import React from 'react';
 import { Scatter } from 'react-chartjs-2';
 import {

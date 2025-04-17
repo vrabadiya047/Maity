@@ -1,0 +1,40 @@
+// src/constants/imageMap.ts
+import {
+    satelliteImage1, satelliteImage2, satelliteImage3, satelliteImage4, satelliteImage5,
+    satelliteImage6, satelliteImage7, satelliteImage8, satelliteImage9, satelliteImage10,
+    satelliteImage11, satelliteImage12, satelliteImage13, satelliteImage14,
+  } from '../assets/satelliteImages';
+  
+  export const imageMap: Record<string, string> = {
+    'Starlink 2044': satelliteImage1,
+    'Starlink 5898': satelliteImage2,
+    'Starlink 1869': satelliteImage3,
+    'Starlink 2352': satelliteImage4,
+    'Fengtai-2 (CAS-5A)': satelliteImage5,
+    'Yarilo-1': satelliteImage6,
+    'LignoSat': satelliteImage7,
+    'Starlink 31173': satelliteImage8,
+    'Starlink 4354': satelliteImage9,
+    'Starlink 1953': satelliteImage10,
+    'Starlink 6339': satelliteImage11,
+    'Xi\'an Hangtou 112': satelliteImage12,
+    'Starlink 6300': satelliteImage13,
+    'Shiyan 16A': satelliteImage14,
+    'Starlink 4749': satelliteImage5,
+    'Starlink 1798': satelliteImage1,
+    'Pearl White 2': satelliteImage2,
+    'Lemur-2 NanaZ': satelliteImage3,
+    'ICEYE-X19': satelliteImage4,
+    'Flock 1c-11': satelliteImage5,
+    'Flock 4y-4': satelliteImage6,
+    'Xingshidai-17': satelliteImage7,
+    'Starlink 1715': satelliteImage8,
+    'Starlink 2372': satelliteImage9,
+    'Starlink 1393': satelliteImage10,
+    'Starlink 1990': satelliteImage11,
+    'Starlink 2260': satelliteImage12,
+    'Starlink 1907': satelliteImage13,
+    'Starlink 2056': satelliteImage14,
+    'EYE 1': satelliteImage5,
+  };
+  
