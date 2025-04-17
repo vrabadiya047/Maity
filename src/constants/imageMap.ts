@@ -1,4 +1,3 @@
-// src/constants/imageMap.ts
 import {
     satelliteImage1, satelliteImage2, satelliteImage3, satelliteImage4, satelliteImage5,
     satelliteImage6, satelliteImage7, satelliteImage8, satelliteImage9, satelliteImage10,
@@ -10,7 +9,7 @@ import {
     'Starlink 5898': satelliteImage2,
     'Starlink 1869': satelliteImage3,
     'Starlink 2352': satelliteImage4,
-    'Fengtai-2 (CAS-5A)': satelliteImage5,
+    'Fengtai-2 (CAS-5A)': satelliteImage9,
     'Yarilo-1': satelliteImage6,
     'LignoSat': satelliteImage7,
     'Starlink 31173': satelliteImage8,
@@ -25,7 +24,7 @@ import {
     'Pearl White 2': satelliteImage2,
     'Lemur-2 NanaZ': satelliteImage3,
     'ICEYE-X19': satelliteImage4,
-    'Flock 1c-11': satelliteImage5,
+    'Flock 1c-11': satelliteImage12,
     'Flock 4y-4': satelliteImage6,
     'Xingshidai-17': satelliteImage7,
     'Starlink 1715': satelliteImage8,

@@ -1,4 +1,3 @@
-// components/SummaryStats.tsx
 import React from 'react';
 import './SummaryStats.css';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -8,7 +8,9 @@ import {
   PointElement,
   Tooltip,
   Legend,
+  Title,
 } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 ChartJS.register(
   LineElement,
@@ -16,7 +18,9 @@ ChartJS.register(
   LinearScale,
   PointElement,
   Tooltip,
-  Legend
+  Legend,
+  Title,
+  zoomPlugin
 );
 
 interface Props {
@@ -27,6 +31,9 @@ interface Props {
 }
 
 const LaunchTrendLine: React.FC<Props> = ({ data }) => {
+  const chartRef = useRef<any>(null);
+  const [zoomed, setZoomed] = useState(false); 
+
   const yearCounts: Record<string, { active: number; inactive: number }> = {};
 
   data.forEach(({ year, active }) => {
@@ -49,52 +56,122 @@ const LaunchTrendLine: React.FC<Props> = ({ data }) => {
       {
         label: 'Active Satellites',
         data: sortedYears.map((y) => yearCounts[y].active),
-        borderColor: 'rgba(35, 168, 224, 1)',
+        borderColor: '#23A8E0',
         backgroundColor: 'rgba(35, 168, 224, 0.2)',
-        fill: false,
-        tension: 0.2,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#23A8E0',
       },
       {
         label: 'Inactive Satellites',
         data: sortedYears.map((y) => yearCounts[y].inactive),
-        borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        fill: false,
-        tension: 0.2,
+        borderColor: '#FF7A00',
+        backgroundColor: 'rgba(255, 122, 0, 0.2)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#FF7A00',
       },
     ],
   };
 
-  const options = {
+  const options: any = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
           color: 'white',
+          font: { size: 14 },
+        },
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `${ctx.dataset.label}: ${ctx.raw}`,
+        },
+      },
+      
+      zoom: {
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: 'xy',
+          onZoom: () => setZoomed(true),
+        },
+        pan: {
+          enabled: true,
+          mode: 'xy',
+          onPan: () => setZoomed(true),
         },
       },
     },
     scales: {
       x: {
-        title: { display: true, text: 'Launch Year', color: 'white' },
+        title: {
+          display: true,
+          text: 'Launch Year',
+          color: 'white',
+          font: { weight: 'bold' },
+        },
         ticks: { color: 'white' },
+        grid: { color: '#444' },
       },
       y: {
+        title: {
+          display: true,
+          text: 'Satellite Count',
+          color: 'white',
+          font: { weight: 'bold' },
+        },
         beginAtZero: true,
-        title: { display: true, text: 'Satellite Count', color: 'white' },
         ticks: { color: 'white' },
+        grid: { color: '#444' },
       },
     },
   };
 
- 
-return (
-  <div className="chart-section">
-    <h2 className="chart-title">Launch Trend by Year</h2>
-    <Line data={chartData} options={options} />
-  </div>
-);
-  
+  const handleResetZoom = () => {
+    if (chartRef.current) {
+      chartRef.current.resetZoom();
+      setZoomed(false);
+    }
   };
+
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.resetZoom();
+    }
+  }, [data]);
+
+  return (
+    <div style={{ height: '400px', position: 'relative' }}>
+      {/* Reset Zoom Button */}
+      {zoomed && (
+        <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+          <button
+            onClick={handleResetZoom}
+            style={{
+              backgroundColor: '#23A8E0',
+              color: 'white',
+              border: 'none',
+              padding: '6px 14px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '0.9rem',
+              transition: '0.3s',
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#1B89B8')}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#23A8E0')}
+          >
+            🔄 Reset Zoom
+          </button>
+        </div>
+      )}
+
+      <Line ref={chartRef} data={chartData} options={options} />
+    </div>
+  );
+};
 
 export default LaunchTrendLine;

@@ -3,21 +3,11 @@ import './App.css';
 
 import { SizeVsMassScatter, CrossSectionBar, MissionTypePie, LaunchTrendLine, ShapeClassMassBar } from './components/charts';
 import { exportToCSV } from './utils/exportToCSV';
-import { imageMap } from './constants/imageMap';
 import { fieldLabels } from './constants/fieldLabels';
-import { attributesToCompare } from './constants/attributes';
-import { rangeMap } from './constants/rangeOptions';
 import SummaryStats from './components/SummaryStats';
 
 import './utils/chartSetup';
-import { Spacecraft, SpacecraftAttributes } from './types/spacecraft';
-import {
-  satelliteImage1,
-  satelliteImage2,
-  satelliteImage3,
-  satelliteImage5,
-  satelliteImage9,
-} from './assets/satelliteImages'; 
+import { Spacecraft } from './types/spacecraft';
 import FilterPanel from './components/FilterPanel';
 import SatelliteGrid from './components/SatelliteGrid';
 import ComparisonModal from './components/ComparisonModal';
@@ -33,8 +23,6 @@ const App: React.FC = () => {
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);
   const [showComparison, setShowComparison] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-
-
 
 
   const [filters, setFilters] = useState({
@@ -130,13 +118,6 @@ const App: React.FC = () => {
     );
   });
 
-  const generateRange = (start: number, end: number, step: number): number[] => {
-    const result: number[] = [];
-    for (let i = start; i <= end; i += step) {
-      result.push(parseFloat(i.toFixed(3)));
-    }
-    return result;
-  };
 
   return (
     <>
@@ -151,50 +132,74 @@ const App: React.FC = () => {
           setViewMode={setViewMode}
         />
   
-        {/* Main Content */}
         <div className="main-content fade-in">
           {filtersApplied && (
             <>
               {filteredSpacecrafts.length === 0 ? (
                 <p>No matching satellites found.</p>
               ) : viewMode === 'graph' ? (
-                <div className="card-wrapper elevated">
-                  <SizeVsMassScatter
-                    data={filteredSpacecrafts.map((s) => ({
-                      name: s.attributes.name,
-                      mass: s.attributes.mass,
-                      width: s.attributes.width,
-                      height: s.attributes.height,
-                      depth: s.attributes.depth,
-                    }))}
-                  />
-                  <CrossSectionBar
-                    data={filteredSpacecrafts.map((s) => ({
-                      name: s.attributes.name,
-                      xSectMin: s.attributes.xSectMin,
-                      xSectMax: s.attributes.xSectMax,
-                      span: s.attributes.span,
-                    }))}
-                  />
-                  <MissionTypePie
-                    data={filteredSpacecrafts.map((s) => ({
-                      mission: s.attributes.mission,
-                    }))}
-                  />
-                  <LaunchTrendLine
-                    data={filteredSpacecrafts.map((s) => ({
-                      year: s.attributes.firstEpoch?.slice(0, 4) || '',
-                      active: s.attributes.active,
-                    }))}
-                  />
-                  <ShapeClassMassBar
-                    data={filteredSpacecrafts.map((s) => ({
-                      shape: s.attributes.shape,
-                      objectClass: s.attributes.objectClass,
-                      mass: s.attributes.mass,
-                    }))}
-                  />
-                </div>
+                <div className="card-wrapper elevated" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+  {/* Mass vs Size Scatter Plot */}
+  <div style={{ backgroundColor: '#1e1e2f', padding: '1.5rem', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}>
+    <h3 style={{ color: '#23A8E0', marginBottom: '1rem', textAlign: 'center' }}>📈 Mass vs Size</h3>
+    <SizeVsMassScatter
+      data={filteredSpacecrafts.map((s) => ({
+        name: s.attributes.name,
+        mass: s.attributes.mass,
+        width: s.attributes.width,
+        height: s.attributes.height,
+        depth: s.attributes.depth,
+      }))}
+    />
+  </div>
+
+  {/* Cross Section Bar */}
+  <div style={{ backgroundColor: '#1e1e2f', padding: '1.5rem', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}>
+    <h3 style={{ color: '#23A8E0', marginBottom: '1rem', textAlign: 'center' }}>📊 Cross Section Analysis</h3>
+    <CrossSectionBar
+      data={filteredSpacecrafts.map((s) => ({
+        name: s.attributes.name,
+        xSectMin: s.attributes.xSectMin,
+        xSectMax: s.attributes.xSectMax,
+        span: s.attributes.span,
+      }))}
+    />
+  </div>
+
+  {/* Mission Type Pie */}
+  <div style={{ backgroundColor: '#1e1e2f', padding: '1.5rem', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}>
+    <h3 style={{ color: '#23A8E0', marginBottom: '1rem', textAlign: 'center' }}>🥧 Mission Type Distribution</h3>
+    <MissionTypePie
+      data={filteredSpacecrafts.map((s) => ({
+        mission: s.attributes.mission,
+      }))}
+    />
+  </div>
+
+  {/* Launch Trend Line */}
+  <div style={{ backgroundColor: '#1e1e2f', padding: '1.5rem', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}>
+    <h3 style={{ color: '#23A8E0', marginBottom: '1rem', textAlign: 'center' }}>🚀 Launch Trends Over Years</h3>
+    <LaunchTrendLine
+      data={filteredSpacecrafts.map((s) => ({
+        year: s.attributes.firstEpoch?.slice(0, 4) || '',
+        active: s.attributes.active,
+      }))}
+    />
+  </div>
+
+  {/* Shape Class Mass Bar */}
+  <div style={{ backgroundColor: '#1e1e2f', padding: '1.5rem', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)' }}>
+    <h3 style={{ color: '#23A8E0', marginBottom: '1rem', textAlign: 'center' }}>🛰️ Shape Class vs Mass</h3>
+    <ShapeClassMassBar
+      data={filteredSpacecrafts.map((s) => ({
+        shape: s.attributes.shape,
+        objectClass: s.attributes.objectClass,
+        mass: s.attributes.mass,
+      }))}
+    />
+  </div>
+</div>
+
               ) : (
                 <div className="card-wrapper elevated">
                   <SummaryStats

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
+  Title,
 } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, Title, zoomPlugin);
 
 interface Props {
   data: {
@@ -16,9 +18,11 @@ interface Props {
 }
 
 const MissionTypePie: React.FC<Props> = ({ data }) => {
+  const chartRef = useRef<any>(null);
+
   const missionCounts: Record<string, number> = {};
 
-  data.forEach(item => {
+  data.forEach((item) => {
     if (!missionCounts[item.mission]) {
       missionCounts[item.mission] = 1;
     } else {
@@ -37,44 +41,66 @@ const MissionTypePie: React.FC<Props> = ({ data }) => {
           'rgba(255, 99, 132, 0.6)',
           'rgba(255, 206, 86, 0.6)',
           'rgba(75, 192, 192, 0.6)',
-          'rgba(153, 102, 255, 0.6)'
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+          'rgba(0, 255, 255, 0.6)',
         ],
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        borderWidth: 1
-      }
-    ]
+        borderColor: 'rgba(255, 255, 255, 0.4)',
+        borderWidth: 2,
+      },
+    ],
   };
 
-  const options = {
+  const options: any = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
-          color: 'white'
+          color: 'white',
+          font: { size: 14 },
         },
-        position: 'bottom'
+        position: 'bottom',
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: (context: any) => {
             const label = context.label || '';
             const value = context.raw || 0;
             return `${label}: ${value}`;
-          }
-        }
-      }
+          },
+        },
+      },
+      
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: 'xy',
+        },
+        pan: {
+          enabled: true,
+          mode: 'xy',
+        },
+      },
+    },
+  };
+
+  useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.resetZoom?.();
     }
-  };
+  }, [data]);
 
-  
-
-return (
-  <div className="chart-section">
-    <h2 className="chart-title">Mission Type Distribution</h2>
-    <Pie data={chartData} options-={options} />
-  </div>
-);
-  
-  };
+  return (
+    <div style={{ height: '400px', position: 'relative' }}>
+      <Pie ref={chartRef} data={chartData} options={options} />
+    </div>
+  );
+};
 
 export default MissionTypePie;
