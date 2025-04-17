@@ -15,6 +15,7 @@ build/
 # IDE settings
 .vscode/
 .idea/
+.env
 
 # OS-specific
 .DS_Store
